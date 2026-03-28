@@ -22,8 +22,8 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['admin', 'teacher', 'student'],
-        default: 'student'
+        enum: ['admin', 'manager', 'employee'],
+        default: 'employee'
     },
 }, {
     timestamps: true
@@ -53,12 +53,12 @@ UserSchema.methods.isAdmin = function () {
     return this.role === 'admin';
 };
 
-UserSchema.methods.isTeacher = function () {
-    return this.role === 'teacher';
+UserSchema.methods.isManager = function () {
+    return this.role === 'manager';
 };
 
-UserSchema.methods.isStudent = function () {
-    return this.role === 'student';
+UserSchema.methods.isEmployee = function () {
+    return this.role === 'employee';
 };
 
 UserSchema.methods.comparePassword = async function (candidatePassword) {
