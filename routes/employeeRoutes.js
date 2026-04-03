@@ -24,6 +24,7 @@ const {
   deleteEmployee
 } = require('../controllers/employeeController');
 
+// Employee module routes
 router.get('/profile', authMiddleware, employeeAuth, getEmployeeProfile);
 router.put('/profile', authMiddleware, employeeAuth, updateEmployeeProfile);
 
@@ -40,6 +41,7 @@ router.get('/progress', authMiddleware, employeeAuth, getEmployeeProgress);
 router.get('/projects/:projectId', authMiddleware, employeeAuth, getEmployeeProjectDetails);
 router.get('/performances/project/:projectId', authMiddleware, employeeAuth, getProjectPerformance);
 
+// Admin routes for employees
 router.post('/', authMiddleware, adminMiddleware, addEmployee);
 router.get('/', authMiddleware, adminMiddleware, getAllEmployees);
 router.get('/:id', authMiddleware, adminMiddleware, getEmployeeById);

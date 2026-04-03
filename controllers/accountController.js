@@ -1,4 +1,4 @@
-const { User, Teacher, Student } = require('../models');
+const { User, Manager, Employee } = require('../models');
 const { BadRequestError, NotFoundError } = require('../errors');
 const { StatusCodes } = require('http-status-codes');
 const bcrypt = require('bcryptjs');
@@ -13,10 +13,10 @@ const getMyProfile = async (req, res) => {
     }
 
     let profile = null;
-    if (user.role === 'teacher') {
-      profile = await Teacher.findOne({ userId: user._id });
-    } else if (user.role === 'student') {
-      profile = await Student.findOne({ userId: user._id });
+    if (user.role === 'manager') {
+      profile = await Manager.findOne({ userId: user._id });
+    } else if (user.role === 'employee') {
+      profile = await Employee.findOne({ userId: user._id });
     }
 
     res.status(StatusCodes.OK).json({

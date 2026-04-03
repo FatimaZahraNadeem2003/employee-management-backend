@@ -18,12 +18,12 @@ router.get("/admin", auth, authorize("admin"), (req, res) => {
   res.json({ msg: "Welcome Admin" });
 });
 
-router.get("/teacher", auth, authorize("teacher"), (req, res) => {
-  res.json({ msg: "Welcome teacher" });
+router.get("/manager", auth, authorize("manager"), (req, res) => {
+  res.json({ msg: "Welcome manager" });
 });
 
-router.get("/student", auth, authorize("student"), (req, res) => {
-  res.json({ msg: "Welcome student" });
+router.get("/employee", auth, authorize("employee"), (req, res) => {
+  res.json({ msg: "Welcome employee" });
 });
 
 module.exports = router

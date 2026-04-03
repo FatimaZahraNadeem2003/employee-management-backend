@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
-const Student = require('../models/Student');
-const Teacher = require('../models/Teacher');
+const Employee = require('../models/Employee');
+const Manager = require('../models/Manager');
 const { BadRequestError, NotFoundError, UnauthenticatedError } = require('../errors');
 const { StatusCodes } = require('http-status-codes');
 
@@ -26,12 +26,12 @@ const searchUsers = asyncHandler(async (req, res) => {
     { $expr: { $regexMatch: { input: { $concat: ["$firstName", " ", "$lastName"] }, regex: searchQuery, options: 'i' } } }
   ];
 
-  if (req.user.role === 'student') {
-    query.role = 'teacher';
-  } else if (req.user.role === 'teacher') {
-    query.role = 'student';
+  if (req.user.role === 'employee') {
+    query.role = 'manager';
+  } else if (req.user.role === 'manager') {
+    query.role = 'employee';
   } else {
-    query.role = { $in: ['student', 'teacher'] };
+    query.role = { $in: ['employee', 'manager'] };
   }
 
   const users = await User.find(query).select('-password');
@@ -54,10 +54,10 @@ const getUserById = asyncHandler(async (req, res) => {
   }
   
   let profile = null;
-  if (user.role === 'student') {
-    profile = await Student.findOne({ userId: user._id });
-  } else if (user.role === 'teacher') {
-    profile = await Teacher.findOne({ userId: user._id });
+  if (user.role === 'employee') {
+    profile = await Employee.findOne({ userId: user._id });
+  } else if (user.role === 'manager') {
+    profile = await Manager.findOne({ userId: user._id });
   }
   
   res.status(StatusCodes.OK).json({
@@ -104,10 +104,10 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new NotFoundError('User not found');
   }
   
-  if (user.role === 'student') {
-    await Student.findOneAndDelete({ userId: user._id });
-  } else if (user.role === 'teacher') {
-    await Teacher.findOneAndDelete({ userId: user._id });
+  if (user.role === 'employee') {
+    await Employee.findOneAndDelete({ userId: user._id });
+  } else if (user.role === 'manager') {
+    await Manager.findOneAndDelete({ userId: user._id });
   }
   
   await user.deleteOne();
