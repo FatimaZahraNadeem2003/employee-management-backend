@@ -1,7 +1,6 @@
 const { User, Manager, Employee } = require('../models');
 const { BadRequestError, NotFoundError } = require('../errors');
 const { StatusCodes } = require('http-status-codes');
-const bcrypt = require('bcryptjs');
 
 const getMyProfile = async (req, res) => {
   try {
