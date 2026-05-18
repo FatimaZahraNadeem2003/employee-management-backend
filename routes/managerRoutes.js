@@ -2,60 +2,39 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authentication');
 const { managerAuth, adminMiddleware } = require('../middleware/authorization');
-const {
-  getManagerDashboardStats,
-  getManagerProjects,
-  getProjectDetails,
-  getProjectEmployees,
-  addPerformance,
-  updatePerformance,
-  getProjectPerformances,
-  getEmployeePerformances,
-  getManagerSchedule,
-  updateSchedule,
-  addRemark,
-  getEmployeeRemarks,
-  getManagerProfile,
-  updateManagerProfile
-} = require('../controllers/managerModuleController');
 
-const {
-  addManager,
-  getAllManagers,
-  getManagerById,
-  updateManager,
-  deleteManager,
-  getManagerStats
-} = require('../controllers/managerController');
+// Import controllers
+const managerModuleController = require('../controllers/managerModuleController');
+const managerController = require('../controllers/managerController');
 
-const { changePassword } = require('../controllers/managerModuleController');
+// Manager module routes
+router.get('/dashboard/stats', authMiddleware, managerAuth, managerModuleController.getManagerDashboardStats);
 
-router.get('/dashboard/stats', authMiddleware, managerAuth, getManagerDashboardStats);
+router.get('/projects', authMiddleware, managerAuth, managerModuleController.getManagerProjects);
+router.get('/projects/:projectId', authMiddleware, managerAuth, managerModuleController.getProjectDetails);
+router.get('/projects/:projectId/employees', authMiddleware, managerAuth, managerModuleController.getProjectEmployees);
 
-router.get('/projects', authMiddleware, managerAuth, getManagerProjects);
-router.get('/projects/:projectId', authMiddleware, managerAuth, getProjectDetails);
-router.get('/projects/:projectId/employees', authMiddleware, managerAuth, getProjectEmployees);
+router.post('/performances', authMiddleware, managerAuth, managerModuleController.addPerformance);
+router.put('/performances/:id', authMiddleware, managerAuth, managerModuleController.updatePerformance);
+router.get('/performances/project/:projectId', authMiddleware, managerAuth, managerModuleController.getProjectPerformances);
+router.get('/performances/employee/:employeeId', authMiddleware, managerAuth, managerModuleController.getEmployeePerformances);
 
-router.post('/performances', authMiddleware, managerAuth, addPerformance);
-router.put('/performances/:id', authMiddleware, managerAuth, updatePerformance);
-router.get('/performances/project/:projectId', authMiddleware, managerAuth, getProjectPerformances);
-router.get('/performances/employee/:employeeId', authMiddleware, managerAuth, getEmployeePerformances);
+router.get('/schedules', authMiddleware, managerAuth, managerModuleController.getManagerSchedule);
+router.put('/schedules/:id', authMiddleware, managerAuth, managerModuleController.updateSchedule);
 
-router.get('/schedules', authMiddleware, managerAuth, getManagerSchedule);
-router.put('/schedules/:id', authMiddleware, managerAuth, updateSchedule);
+router.post('/remarks', authMiddleware, managerAuth, managerModuleController.addRemark);
+router.get('/remarks/employee/:employeeId', authMiddleware, managerAuth, managerModuleController.getEmployeeRemarks);
 
-router.post('/remarks', authMiddleware, managerAuth, addRemark);
-router.get('/remarks/employee/:employeeId', authMiddleware, managerAuth, getEmployeeRemarks);
+router.get('/profile', authMiddleware, managerAuth, managerModuleController.getManagerProfile);
+router.put('/profile', authMiddleware, managerAuth, managerModuleController.updateManagerProfile);
+router.put('/change-password', authMiddleware, managerAuth, managerModuleController.changePassword);
 
-router.get('/profile', authMiddleware, managerAuth, getManagerProfile);
-router.put('/profile', authMiddleware, managerAuth, updateManagerProfile);
-router.put('/change-password', authMiddleware, managerAuth, changePassword);
-
-router.post('/', authMiddleware, adminMiddleware, addManager);
-router.get('/', authMiddleware, adminMiddleware, getAllManagers);
-router.get('/stats', authMiddleware, adminMiddleware, getManagerStats);
-router.get('/:id', authMiddleware, adminMiddleware, getManagerById);
-router.put('/:id', authMiddleware, adminMiddleware, updateManager);
-router.delete('/:id', authMiddleware, adminMiddleware, deleteManager);
+// Admin routes for managers (from managerController)
+router.post('/', authMiddleware, adminMiddleware, managerController.addManager);
+router.get('/', authMiddleware, adminMiddleware, managerController.getAllManagers);
+router.get('/stats', authMiddleware, adminMiddleware, managerController.getManagerStats);
+router.get('/:id', authMiddleware, adminMiddleware, managerController.getManagerById);
+router.put('/:id', authMiddleware, adminMiddleware, managerController.updateManager);
+router.delete('/:id', authMiddleware, adminMiddleware, managerController.deleteManager);
 
 module.exports = router;
