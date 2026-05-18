@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authentication');
 const { adminMiddleware } = require('../middleware/authorization');
+const assignmentController = require('../controllers/assignmentController');
+
 const {
   createAssignment,
   getAllAssignments,
@@ -10,7 +12,7 @@ const {
   deleteAssignment,
   getEmployeeProjects,
   bulkAssign
-} = require('../controllers/assignmentController');
+} = assignmentController;
 
 router.use(authMiddleware);
 router.use(adminMiddleware);

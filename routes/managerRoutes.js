@@ -30,7 +30,6 @@ const {
 
 const { changePassword } = require('../controllers/managerModuleController');
 
-// Manager module routes
 router.get('/dashboard/stats', authMiddleware, managerAuth, getManagerDashboardStats);
 
 router.get('/projects', authMiddleware, managerAuth, getManagerProjects);
@@ -52,7 +51,6 @@ router.get('/profile', authMiddleware, managerAuth, getManagerProfile);
 router.put('/profile', authMiddleware, managerAuth, updateManagerProfile);
 router.put('/change-password', authMiddleware, managerAuth, changePassword);
 
-// Admin routes for managers
 router.post('/', authMiddleware, adminMiddleware, addManager);
 router.get('/', authMiddleware, adminMiddleware, getAllManagers);
 router.get('/stats', authMiddleware, adminMiddleware, getManagerStats);
